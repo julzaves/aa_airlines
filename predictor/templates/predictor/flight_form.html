@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Flight Form</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.passenger.id_for_label }}" class="form-label">{{ form.passenger.label }}</label>
+                <select name="{{ form.passenger.name }}" class="form-select" id="{{ form.passenger.id_for_label }}">
+                    {% for choice in form.passenger %}
+                        <option value="{{ choice.data.value }}" {% if choice.data.value == form.passenger.value %}selected{% endif %}>{{ choice.data.label }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.passenger.errors %}<div class="text-danger">{{ form.passenger.errors }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.departure_airport.id_for_label }}" class="form-label">{{ form.departure_airport.label }}</label>
+                <select name="{{ form.departure_airport.name }}" class="form-select" id="{{ form.departure_airport.id_for_label }}">
+                    {% for choice in form.departure_airport %}
+                        <option value="{{ choice.data.value }}" {% if choice.data.value == form.departure_airport.value %}selected{% endif %}>{{ choice.data.label }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.departure_airport.errors %}<div class="text-danger">{{ form.departure_airport.errors }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.arrival_airport.id_for_label }}" class="form-label">{{ form.arrival_airport.label }}</label>
+                <select name="{{ form.arrival_airport.name }}" class="form-select" id="{{ form.arrival_airport.id_for_label }}">
+                    {% for choice in form.arrival_airport %}
+                        <option value="{{ choice.data.value }}" {% if choice.data.value == form.arrival_airport.value %}selected{% endif %}>{{ choice.data.label }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.arrival_airport.errors %}<div class="text-danger">{{ form.arrival_airport.errors }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.date_time.id_for_label }}" class="form-label">{{ form.date_time.label }}</label>
+                <input type="datetime-local" name="{{ form.date_time.name }}" value="{{ form.date_time.value|date:'Y-m-d\TH:i' }}" class="form-control" id="{{ form.date_time.id_for_label }}">
+                {% if form.date_time.errors %}<div class="text-danger">{{ form.date_time.errors }}</div>{% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <a href="{% url 'flight_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">  <!-- For icons -->
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">AA Airlines</h1>
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-airplane-engines-fill text-primary" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">Manage Airports</h5>
+                        <p class="card-text">Add, edit, or archive airport codes and details.</p>
+                        <a href="{% url 'airport_list' %}" class="btn btn-primary">Go to Airports</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people-fill text-success" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">Manage Passengers</h5>
+                        <p class="card-text">Handle customer information and profiles.</p>
+                        <a href="{% url 'passenger_list' %}" class="btn btn-success">Go to Passengers</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-calendar-event-fill text-warning" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">Manage Flights</h5>
+                        <p class="card-text">Record and manage flight histories.</p>
+                        <a href="{% url 'flight_list' %}" class="btn btn-warning">Go to Flights</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-center fs-4">
+                        <i class="bi bi-graph-up"></i> <strong>Predictions</strong>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-center">Select a passenger to view their flight predictions based on analyzed patterns.</p>
+                        <form method="post" action="{% url 'select_passenger' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="passenger" class="form-label"><i class="bi bi-person-lines-fill"></i> Select a Passenger:</label>
+                                <select name="passenger" id="passenger" class="form-select" required>
+                                    <option value="">-- Choose Passenger --</option>
+                                    {% for passenger in passengers %}
+                                        <option value="{{ passenger.pk }}">{{ passenger.name }} ({{ passenger.email }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-info w-100"><i class="bi bi-eye"></i> View Predictions</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
