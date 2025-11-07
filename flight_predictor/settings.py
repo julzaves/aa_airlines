@@ -3,13 +3,13 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'your-secret-key-here'  # Change in production
+# SECRET_KEY = 'your-secret-key-here'  # Change in production
 
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = [
-#     'aa-airlines-1.onrender.com',
-# ]
+ALLOWED_HOSTS = [
+    'aa-airlines-1.onrender.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
