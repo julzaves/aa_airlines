@@ -8,7 +8,7 @@ SECRET_KEY = 'your-secret-key-here'  # Change in production
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'aa_airlines.julzaves.onrender.com'
+    'aa-airlines-1.onrender.com'
 ]
 
 INSTALLED_APPS = [

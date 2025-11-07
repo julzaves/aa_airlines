@@ -1,1 +1,1 @@
-web: gunicorn aa_airlines.wsgi:application
+web: gunicorn flight_predictor.wsgi:application
