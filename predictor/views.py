@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
-from django.utils import timezone
 from datetime import timedelta
 from collections import Counter
 import random
@@ -25,7 +24,7 @@ def select_passenger_for_predictions(request):
             return redirect('prediction_list', passenger_id=passenger_id)
     return redirect('home')
 
-def generate_predictions(request, passenger_id, years = 5):
+def generate_predictions(request, passenger_id, years=5):
     passenger = get_object_or_404(Passenger, pk=passenger_id)
     flights = Flight.objects.filter(passenger=passenger, is_archived=False).order_by('date_time')
     
@@ -33,11 +32,8 @@ def generate_predictions(request, passenger_id, years = 5):
         return redirect('prediction_list', passenger_id=passenger_id)
     
     dates = [f.date_time.date() for f in flights]
-    times = [f.date_time.time() for f in flights]
     routes = [(f.departure_airport.code, f.arrival_airport.code) for f in flights]
     
-    time_counts = Counter(times)
-    most_common_time = time_counts.most_common(1)[0][0] if time_counts else None
     route_counts = Counter(routes)
     top_route = route_counts.most_common(1)[0][0] if route_counts else None
     dep_code, arr_code = top_route if top_route else (None, None)
@@ -49,15 +45,26 @@ def generate_predictions(request, passenger_id, years = 5):
     pattern_strength = min(len(flights) / 10, 1)
     base_percentage = 50 + (25 * pattern_strength)
     
-    base_date = flights.last().date_time if flights else timezone.now()
+    time_patterns = {}
+    for flight in flights:
+        dow = flight.date_time.weekday()
+        time_patterns.setdefault(dow, []).append(flight.date_time.time())
+    most_common_times = {dow: Counter(times).most_common(1)[0][0] if times else None for dow, times in time_patterns.items()}
+    most_common_time = Counter([f.date_time.time() for f in flights]).most_common(1)[0][0] if flights else None
+    
+    base_date = flights.last().date_time
     predictions = []
     fib_days = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]
     
     for i in range(1, 365 * years):
         pred_datetime = base_date + timedelta(days=i)
-        if most_common_time:
+        dow = pred_datetime.weekday()
+        common_time = most_common_times.get(dow)
+        if common_time:
+            pred_datetime = pred_datetime.replace(hour=common_time.hour, minute=common_time.minute)
+        elif most_common_time:
             pred_datetime = pred_datetime.replace(hour=most_common_time.hour, minute=most_common_time.minute)
-
+        
         percentage = base_percentage
         if i in fib_days:
             percentage += 5

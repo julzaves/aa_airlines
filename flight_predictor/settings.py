@@ -8,7 +8,8 @@ SECRET_KEY = 'hello-world'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'aa-airlines-1.onrender.com'
+    '127.0.0.1',
+    'aa-airlines-1.onrender.com',
 ]
 
 INSTALLED_APPS = [
