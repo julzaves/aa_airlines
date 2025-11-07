@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'aa-airlines-1.onrender.com',
+    'aa-airlines-1.onrender.com'
 ]
 
 INSTALLED_APPS = [
