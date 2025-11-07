@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = 'your-secret-key-here'  # Change in production
+SECRET_KEY = 'your-secret-key-here'  # Change in production
 
 DEBUG = False
 
