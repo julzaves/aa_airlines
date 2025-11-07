@@ -17,7 +17,7 @@ def select_passenger_for_predictions(request):
     if request.method == 'POST':
         passenger_id = request.POST.get('passenger')
         years = int(request.POST.get('years', 5))
-        request.session['prediction_years'] = years  # Store in session
+        request.session['prediction_years'] = years
         if passenger_id:
             passenger = get_object_or_404(Passenger, pk=passenger_id)
             if not Prediction.objects.filter(passenger=passenger).exists():
@@ -153,7 +153,7 @@ class PredictionListView(ListView):
     def get_queryset(self):
         passenger_id = self.kwargs['passenger_id']
         passenger = get_object_or_404(Passenger, pk=passenger_id)
-        years = self.request.session.get('prediction_years', 5)  # Get from session
+        years = self.request.session.get('prediction_years', 5)
         Prediction.objects.filter(passenger=passenger).delete()
         generate_predictions(None, passenger_id, years)
         return Prediction.objects.filter(passenger_id=passenger_id)

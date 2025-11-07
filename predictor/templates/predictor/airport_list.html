@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AA Airlines - Airports</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Airports</h1>
-        <a href="{% url 'airport_create' %}" class="btn btn-success mb-3">Add Airport</a>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for airport in object_list %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Airports | AA Airlines</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1 class="mb-4">Airports</h1>
+            <a href="{% url 'airport_create' %}" class="btn btn-success mb-3">Add Airport</a>
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ airport.code }}</td>
-                        <td>{{ airport.name }}</td>
-                        <td>
-                            <a href="{% url 'airport_update' airport.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="{% url 'airport_archive' airport.pk %}" class="btn btn-danger btn-sm">Archive</a>
-                        </td>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Menu</a>
-    </div>
-</body>
+                </thead>
+                <tbody>
+                    {% for airport in object_list %}
+                        <tr>
+                            <td>{{ airport.code }}</td>
+                            <td>{{ airport.name }}</td>
+                            <td>
+                                <a href="{% url 'airport_update' airport.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'airport_archive' airport.pk %}" class="btn btn-danger btn-sm">Archive</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to Menu</a>
+        </div>
+    </body>
 </html>
