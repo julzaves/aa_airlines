@@ -61,6 +61,16 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label for="years" class="form-label"><i class="bi bi-calendar-range"></i> Prediction Length (Years):</label>
+                                <select name="years" id="years" class="form-select" required>
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Years</option>
+                                    <option value="3">3 Years</option>
+                                    <option value="4">4 Years</option>
+                                    <option value="5" selected>5 Years</option>
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-info w-100"><i class="bi bi-eye"></i> View Predictions</button>
                         </form>
                     </div>

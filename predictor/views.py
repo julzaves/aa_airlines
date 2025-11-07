@@ -16,14 +16,16 @@ def home(request):
 def select_passenger_for_predictions(request):
     if request.method == 'POST':
         passenger_id = request.POST.get('passenger')
+        years = int(request.POST.get('years', 5))
+        request.session['prediction_years'] = years  # Store in session
         if passenger_id:
             passenger = get_object_or_404(Passenger, pk=passenger_id)
             if not Prediction.objects.filter(passenger=passenger).exists():
-                generate_predictions(request, passenger_id)
+                generate_predictions(request, passenger_id, years)
             return redirect('prediction_list', passenger_id=passenger_id)
     return redirect('home')
 
-def generate_predictions(request, passenger_id):
+def generate_predictions(request, passenger_id, years = 5):
     passenger = get_object_or_404(Passenger, pk=passenger_id)
     flights = Flight.objects.filter(passenger=passenger, is_archived=False).order_by('date_time')
     
@@ -51,7 +53,7 @@ def generate_predictions(request, passenger_id):
     predictions = []
     fib_days = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]
     
-    for i in range(1, 365 * 5):
+    for i in range(1, 365 * years):
         pred_datetime = base_date + timedelta(days=i)
         if most_common_time:
             pred_datetime = pred_datetime.replace(hour=most_common_time.hour, minute=most_common_time.minute)
@@ -149,11 +151,16 @@ class PredictionListView(ListView):
     template_name = 'predictor/prediction_list.html'
     
     def get_queryset(self):
-        return Prediction.objects.filter(passenger_id=self.kwargs['passenger_id'])
+        passenger_id = self.kwargs['passenger_id']
+        passenger = get_object_or_404(Passenger, pk=passenger_id)
+        years = self.request.session.get('prediction_years', 5)  # Get from session
+        Prediction.objects.filter(passenger=passenger).delete()
+        generate_predictions(None, passenger_id, years)
+        return Prediction.objects.filter(passenger_id=passenger_id)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['passenger_id'] = self.kwargs['passenger_id']  # Add passenger_id to context
+        context['passenger_id'] = self.kwargs['passenger_id']
         return context
     
 def delete_predictions(request, passenger_id):
