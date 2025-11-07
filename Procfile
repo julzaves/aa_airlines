@@ -1,0 +1,1 @@
+web: gunicorn aa_airlines.wsgi:application
