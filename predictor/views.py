@@ -171,6 +171,7 @@ class PredictionListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['passenger_id'] = self.kwargs['passenger_id']
+        context['years'] = self.request.session.get('prediction_years', 5)
         return context
     
 def delete_predictions(request, passenger_id):

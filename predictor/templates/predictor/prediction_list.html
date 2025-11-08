@@ -11,6 +11,7 @@
         <h1 class="mb-4">Flight Predictions for AA Airlines Customers</h1>
         <table class="table table-striped">
             <h5 style="font-weight: 400;">Name of Customer: <strong style="font-weight: 700;">{{ object_list.0.passenger.name }}</strong></h5>
+            <h5 style="font-weight: 300;">Prediction for <strong style="font-weight: 600;">{{ years }} {% if years == 1 %}year{% else %}years{% endif %}</strong></h5>
             <thead>
                 <tr>
                     <th>Date / Time</th>
