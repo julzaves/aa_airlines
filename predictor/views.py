@@ -90,6 +90,7 @@ def generate_predictions(request, passenger_id, years=5):
 class AirportListView(ListView):
     model = Airport
     template_name = 'predictor/airport_list.html'
+    queryset = Airport.objects.filter(is_archived=False)
 
 class AirportCreateView(CreateView):
     model = Airport
@@ -112,6 +113,7 @@ def archive_airport(request, pk):
 class PassengerListView(ListView):
     model = Passenger
     template_name = 'predictor/passenger_list.html'
+    queryset = Passenger.objects.filter(is_archived=False)
 
 class PassengerCreateView(CreateView):
     model = Passenger
@@ -134,6 +136,7 @@ def archive_passenger(request, pk):
 class FlightListView(ListView):
     model = Flight
     template_name = 'predictor/flight_list.html'
+    queryset = Flight.objects.filter(is_archived=False)
 
 class FlightCreateView(CreateView):
     model = Flight
